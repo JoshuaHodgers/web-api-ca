@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import usersRouter from './api/users/index.js';
+import moviesRouter from './api/movies/index.js';
 import './db/index.js';
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.use('/api/users', usersRouter);
+app.use('/api/movies', moviesRouter);
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
