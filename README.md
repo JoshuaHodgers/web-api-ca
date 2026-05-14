@@ -1,2 +1,3 @@
-# web-api-ca
-API movie extension
+# Assignment 2 - Web API.
+
+Name: Joshua Hodgers
