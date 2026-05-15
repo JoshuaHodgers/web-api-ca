@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getFavourites, addFavourite, deleteFavourite } from "../api/tmdb-api";
 
 export const MoviesContext = React.createContext(null);
 
@@ -7,17 +8,30 @@ const MoviesContextProvider = (props) => {
   const [mustWatch, setMustWatch] = useState([]);
   const [myReviews, setMyReviews] = useState({});
 
-  const addToFavorites = (movie) => {
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getFavourites().then((favourites) => {
+        const favouriteIds = favourites.map((favourite) => favourite.movieId);
+        setFavorites(favouriteIds);
+      });
+    }
+  }, []);
+
+  const addToFavorites = async (movie) => {
     let newFavorites = [];
+
     if (!favorites.includes(movie.id)) {
+      await addFavourite(movie);
       newFavorites = [...favorites, movie.id];
     } else {
       newFavorites = [...favorites];
     }
+
     setFavorites(newFavorites);
   };
 
-  const removeFromFavorites = (movie) => {
+  const removeFromFavorites = async (movie) => {
+    await deleteFavourite(movie.id);
     setFavorites(favorites.filter((mId) => mId !== movie.id));
   };
 

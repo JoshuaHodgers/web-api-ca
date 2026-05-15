@@ -2,27 +2,18 @@ import React from "react";
 import MovieDetails from "../components/movieDetails/";
 import PageTemplate from "../components/templatesMoviePage";
 import useMovie from "../hooks/useMovie";
-import { getMovie } from '../api/tmdb-api'
-import { useQuery } from '@tanstack/react-query';
-import Spinner from '../components/spinner'
 // import useMovie from "../hooks/useMovie";   Redundant
 
-
 const MoviePage = (props) => {
-  const { id } = useParams();
-    const { data: movie, error, isPending, isError  } = useQuery({
-    queryKey: ['movie', {id: id}],
-    queryFn: getMovie,
-  })
+  const { movie, error, isLoading } = useMovie(props.match.params.id);
 
-  if (isPending) {
-    return <Spinner />;
+  if (isLoading) {
+    return <p>Loading movie details...</p>;
   }
 
-  if (isError) {
-    return <h1>{error.message}</h1>;
+  if (error) {
+    return <p>{error.message}</p>;
   }
-
 
   return (
     <>
